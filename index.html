@@ -61,8 +61,6 @@ button {
   font-size: 12px;
   background: #ddd;
   position: absolute;
-  top: 60%;
-  left: 55%;
 }
 button:hover {
   transform: scale(1.08);
@@ -112,6 +110,9 @@ const result = document.getElementById("result");
 
 let yesScale = 1;
 const maxYesScale = 2.5;
+  // Set initial NO position (clean starting spot)
+noBtn.style.left = "55%";
+noBtn.style.top = "60%";
 
 // place NO button initially
 moveNo();
