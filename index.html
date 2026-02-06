@@ -95,7 +95,7 @@ button:hover {
 .result {
   animation: pop 0.5s ease-out;
 }
-  .buttons {#
+  .buttons {
   display: flex;
   justify-content: center;
   gap: 16px;
@@ -185,7 +185,6 @@ function moveNo() {
     Math.random() * maxY + padding + "px";
 
   if (yesScale < maxYesScale) {
-  yesBtn.style.animation = "none"; // stop heartbeat
   yesScale += 0.12;
   yesBtn.style.transform =
     `scale(${yesScale}) rotate(${Math.random() * 10 - 5}deg)`;
