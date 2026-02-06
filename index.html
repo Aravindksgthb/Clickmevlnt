@@ -194,6 +194,8 @@ function moveNo() {
 
 // activate dodge
 document.addEventListener("DOMContentLoaded", () => {
+
+  // activate NO dodge
   setTimeout(() => {
     noBtn.addEventListener("mouseover", moveNo);
     noBtn.addEventListener("touchstart", (e) => {
@@ -201,17 +203,18 @@ document.addEventListener("DOMContentLoaded", () => {
       moveNo();
     });
   }, 300);
-});
 
-// YES click
-yesBtn.addEventListener("click", () => {
-  document.getElementById("question").innerText =
-    "You just made my day 💕🥰";
+  // YES click
+  yesBtn.addEventListener("click", () => {
+    document.getElementById("question").innerText =
+      "You just made my day 💕🥰";
 
-  result.style.display = "block";
-  spawnHearts();
-  yesBtn.style.display = "none";
-  noBtn.style.display = "none";
+    result.style.display = "block";
+    spawnHearts();
+    yesBtn.style.display = "none";
+    noBtn.style.display = "none";
+  });
+
 });
 </script>
 </body>
