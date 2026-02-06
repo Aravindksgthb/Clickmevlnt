@@ -148,11 +148,7 @@ const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const card = document.getElementById("card");
 const result = document.getElementById("result");
-
-document.addEventListener("DOMContentLoaded", () => {
-  let yesScale = 1;
-  const maxYesScale = 2.5;
-  function spawnHearts() {
+function spawnHearts() {
   for (let i = 0; i < 6; i++) {
     const heart = document.createElement("div");
     heart.className = "heart";
@@ -160,9 +156,11 @@ document.addEventListener("DOMContentLoaded", () => {
     heart.style.left = Math.random() * 200 + 40 + "px";
     heart.style.top = "260px";
     card.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 1500);
-  }
+}
+document.addEventListener("DOMContentLoaded", () => {
+  let yesScale = 1;
+  const maxYesScale = 2.5;
+  
 }
 
   function moveNo() {
@@ -185,10 +183,14 @@ document.addEventListener("DOMContentLoaded", () => {
     Math.random() * (maxY - minY) + minY + "px";
 
   if (yesScale < maxYesScale) {
-    yesScale += 0.12;
-    yesBtn.style.transform =
-      `scale(${yesScale}) rotate(${Math.random() * 10 - 5}deg)`;
-  }
+  yesScale += 0.12;
+  yesBtn.style.transform =
+    `scale(${yesScale}) rotate(${Math.random() * 10 - 5}deg)`;
+}
+
+setTimeout(() => {
+  noBtn.style.animation = "";
+}, 150);
 }
 setTimeout(() => {
   noBtn.style.animation = "";
