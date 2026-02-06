@@ -133,11 +133,14 @@ noBtn.style.top  = (yesRect.top - cardRect.top) + "px";
     }
   }
 
+  // activate dodge AFTER page fully settles
+setTimeout(() => {
   noBtn.addEventListener("mouseover", moveNo);
   noBtn.addEventListener("touchstart", (e) => {
     e.preventDefault();
     moveNo();
   });
+}, 300);
 });
 // YES click
 yesBtn.addEventListener("click", () => {
