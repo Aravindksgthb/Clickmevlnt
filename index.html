@@ -182,11 +182,11 @@ function moveNo() {
     Math.random() * maxY + padding + "px";
 
   if (yesScale < maxYesScale) {
-    yesScale += 0.12;
-    yesBtn.style.transform =
-      `scale(${yesScale}) rotate(${Math.random() * 10 - 5}deg)`;
-  }
-
+  yesBtn.style.animation = "none"; // stop heartbeat
+  yesScale += 0.12;
+  yesBtn.style.transform =
+    `scale(${yesScale}) rotate(${Math.random() * 10 - 5}deg)`;
+}
   setTimeout(() => {
     noBtn.style.animation = "";
   }, 150);
