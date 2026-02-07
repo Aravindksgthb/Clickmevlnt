@@ -215,33 +215,44 @@ const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
 const result = document.getElementById("result");
 const question = document.getElementById("question");
-let typingTimeout = null;
+  
 let yesScale = 1;
 const maxYesScale = 2.5;
 
 /* typing */
+let typingTimeout = null;
+
 function typeText(element, text, baseSpeed = 60) {
-  element.textContent = "";
-  let chars = Array.from(text); // <-- IMPORTANT
+  if (typingTimeout) clearTimeout(typingTimeout);
+
+  // ✅ split text safely (handles emojis, spaces, punctuation)
+  const chars = Array.from(text);
+
+  element.innerText = "";
+  element.classList.add("typing");
   let i = 0;
 
   function typeNext() {
-    element.textContent += text[i];
+    element.innerText += chars[i];
     i++;
+
+    if (i >= chars.length - 1) {
+      element.classList.remove("typing");
+    }
 
     if (i < chars.length) {
       let delay = baseSpeed + Math.random() * 80;
 
-      if (/[.,!?]/.test(chars[i - 1])) {
+      // pause after punctuation / emoji
+      if (/[.,!?💖💕🥰]/.test(chars[i - 1])) {
         delay += 250;
       }
 
-      setTimeout(typeNext, delay);
+      typingTimeout = setTimeout(typeNext, delay);
     }
   }
 
-  if (typingTimeout) clearTimeout(typingTimeout);
-typingTimeout = setTimeout(typeNext, baseSpeed);
+  typingTimeout = setTimeout(typeNext, baseSpeed);
 }
 /* hearts */
 function spawnHearts() {
