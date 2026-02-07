@@ -255,8 +255,8 @@ function resetUI() {
   yesScale = 1;
 typeText(
   document.getElementById("question"),
-  "You just made my day 💕🥰",
-  45
+  "Will you be my Valentine? 💖",
+  55
 );
   // reset buttons
   yesBtn.style.display = "inline-block";
@@ -336,8 +336,11 @@ resetUI();
   card.style.opacity = "0.9";
 
   setTimeout(() => {
-    document.getElementById("question").innerText =
-      "You just made my day 💕🥰";
+    typeText(
+  document.getElementById("question"),
+  "You just made my day 💕🥰",
+  45
+);
 
     result.style.display = "block";
     spawnHearts();
