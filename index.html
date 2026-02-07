@@ -215,7 +215,7 @@ const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
 const result = document.getElementById("result");
 const question = document.getElementById("question");
-
+let typingTimeout = null;
 let yesScale = 1;
 const maxYesScale = 2.5;
 
@@ -240,7 +240,8 @@ function typeText(element, text, baseSpeed = 60) {
     }
   }
 
-  setTimeout(typeNext, baseSpeed);
+  if (typingTimeout) clearTimeout(typingTimeout);
+typingTimeout = setTimeout(typeNext, baseSpeed);
 }
 /* hearts */
 function spawnHearts() {
