@@ -25,6 +25,21 @@ overflow: hidden;
   background-size: 400% 400%;
   animation: dreamyBG 30s ease infinite;
 }
+  @import url("https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap");
+
+h2 {
+  font-family: "Patrick Hand", cursive;
+  letter-spacing: 0.5px;
+}
+  .typing::after {
+  content: "▍";
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
 @keyframes dreamyBG {
   0% {
     background-position: 0% 50%;
@@ -226,8 +241,20 @@ function resetUI() {
   yesScale = 1;
 
   // reset question
-  document.getElementById("question").innerText =
-    "Will you be my Valentine? 💖";
+  function typeText(element, text, speed = 55) {
+  element.innerText = "";
+  element.classList.add("typing");
+  let i = 0;
+
+  const interval = setInterval(() => {
+    element.innerText += text[i];
+    i++;
+    if (i >= text.length) {
+      clearInterval(interval);
+      element.classList.remove("typing");
+    }
+  }, speed);
+  }
 
   // reset buttons
   yesBtn.style.display = "inline-block";
