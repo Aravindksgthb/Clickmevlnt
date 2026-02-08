@@ -223,8 +223,9 @@ button {
   <img src="Second.gif" style="width:200px;">
 </div>
 </div>
-
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
 const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
@@ -234,7 +235,7 @@ const question = document.getElementById("question");
 let yesScale = 1;
 const maxYesScale = 2.5;
 
-/* ---------------- typing (emoji-safe + cancellable) ---------------- */
+/* ---------------- typing ---------------- */
 let typingSession = 0;
 
 function typeText(element, text, baseSpeed = 60, onComplete) {
@@ -255,7 +256,7 @@ function typeText(element, text, baseSpeed = 60, onComplete) {
 
     if (i >= chars.length) {
       element.classList.remove("typing");
-      if (onComplete) onComplete();
+      onComplete && onComplete();
       return;
     }
 
@@ -277,8 +278,10 @@ function spawnHearts() {
     const h = document.createElement("div");
     h.className = "heart";
     h.textContent = "💖";
-    h.style.left = rect.left - cardRect.left + rect.width / 2 + "px";
-    h.style.top = rect.top - cardRect.top + "px";
+    h.style.left =
+      rect.left - cardRect.left + rect.width / 2 + "px";
+    h.style.top =
+      rect.top - cardRect.top - 10 + "px"; // ⬅ FIX
     card.appendChild(h);
     setTimeout(() => h.remove(), 1500);
   }
@@ -306,6 +309,7 @@ function moveNo() {
 
 /* ---------------- ambient hearts ---------------- */
 const ambient = document.querySelector(".ambient-hearts");
+
 setInterval(() => {
   const h = document.createElement("div");
   h.className = "ambient-heart";
@@ -326,21 +330,15 @@ noBtn.addEventListener("touchstart", e => {
   moveNo();
 });
 
-/* ---------------- YES scene flow ---------------- */
+/* ---------------- YES flow ---------------- */
 yesBtn.addEventListener("click", () => {
   if (navigator.vibrate) navigator.vibrate(40);
 
-  card.classList.add("yes-mode");
-  card.classList.add("breathing");
-
-  // fade buttons
+  card.classList.add("yes-mode", "breathing");
   document.querySelector(".buttons").classList.add("hide");
 
-  // ✨ small emotional pause before text starts
   setTimeout(() => {
     typeText(question, "I was really hoping you'd say yes…", 65, () => {
-
-      // 🌸 gentle pause between lines
       setTimeout(() => {
         typeText(question, "Happy Valentine’s Day 💖", 60, () => {
           result.style.display = "block";
@@ -348,10 +346,10 @@ yesBtn.addEventListener("click", () => {
           spawnHearts();
         });
       }, 900);
-
     });
   }, 400);
 });
+
 });
 </script>
 
