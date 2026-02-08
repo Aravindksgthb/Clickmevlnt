@@ -59,7 +59,15 @@ body {
     opacity: 0;
   }
 }
+@keyframes breathe {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
 
+.paper.breathing {
+  animation: breathe 4.5s ease-in-out infinite;
+}
 /* card */
 .paper {
   background: #fffdf7;
@@ -323,7 +331,7 @@ yesBtn.addEventListener("click", () => {
   if (navigator.vibrate) navigator.vibrate(40);
 
   card.classList.add("yes-mode");
-
+  card.classList.add("breathing");
 // fade buttons instead of instant vanish
 document.querySelector(".buttons").classList.add("hide");
 
