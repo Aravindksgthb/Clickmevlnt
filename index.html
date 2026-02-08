@@ -208,31 +208,18 @@ button {
     <img src="Second.gif" style="width:200px;">
   </div>
 </div>
-
 <script>
 const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
 const result = document.getElementById("result");
 const question = document.getElementById("question");
-  
+
 let yesScale = 1;
 const maxYesScale = 2.5;
 
-/* typing */
-let typingTimeout = null;
-
-function typeText(element, text, baseSpeed = 60) {
-  if (typingTimeout) clearTimeout(typingTimeout);
-
-  // ✅ split text safely (handles emojis, spaces, punctuation)
-  const chars = Array.from(text);
-
-  element.textContent = "";
-  element.classList.add("typing");
-  let i = 0;
-
-  let typingSession = 0;
+/* ---------- typing (SAFE + EMOJI FIXED) ---------- */
+let typingSession = 0;
 
 function typeText(element, text, baseSpeed = 60) {
   typingSession++;
@@ -245,7 +232,7 @@ function typeText(element, text, baseSpeed = 60) {
   let i = 0;
 
   function typeNext() {
-    if (session !== typingSession) return; // ⛔ cancelled
+    if (session !== typingSession) return;
 
     element.textContent += chars[i];
     i++;
@@ -256,17 +243,15 @@ function typeText(element, text, baseSpeed = 60) {
     }
 
     let delay = baseSpeed + Math.random() * 80;
-
-    if (/[.,!?💖💕🥰]/.test(chars[i - 1])) {
-      delay += 250;
-    }
+    if (/[.,!?💖💕🥰]/.test(chars[i - 1])) delay += 250;
 
     setTimeout(typeNext, delay);
   }
 
   setTimeout(typeNext, baseSpeed);
 }
-/* hearts */
+
+/* ---------- hearts on YES ---------- */
 function spawnHearts() {
   const rect = yesBtn.getBoundingClientRect();
   const cardRect = card.getBoundingClientRect();
@@ -274,7 +259,7 @@ function spawnHearts() {
   for (let i = 0; i < 8; i++) {
     const h = document.createElement("div");
     h.className = "heart";
-    h.innerText = "💖";
+    h.textContent = "💖";
     h.style.left = rect.left - cardRect.left + rect.width / 2 + "px";
     h.style.top = rect.top - cardRect.top + "px";
     card.appendChild(h);
@@ -282,7 +267,7 @@ function spawnHearts() {
   }
 }
 
-/* NO dodge */
+/* ---------- NO dodge ---------- */
 function moveNo() {
   noBtn.style.position = "absolute";
   noBtn.style.animation = "shake 0.15s";
@@ -300,12 +285,12 @@ function moveNo() {
   }
 }
 
-/* ambient hearts */
+/* ---------- ambient floating hearts ---------- */
 const ambient = document.querySelector(".ambient-hearts");
 setInterval(() => {
   const h = document.createElement("div");
   h.className = "ambient-heart";
-  h.innerText = "💖";
+  h.textContent = "💖";
   h.style.left = Math.random() * 100 + "vw";
   h.style.fontSize = 12 + Math.random() * 10 + "px";
   h.style.animationDuration = 20 + Math.random() * 15 + "s";
@@ -313,7 +298,7 @@ setInterval(() => {
   setTimeout(() => h.remove(), 40000);
 }, 1200);
 
-/* init */
+/* ---------- init ---------- */
 typeText(question, "Will you be my Valentine? 💖", 70);
 
 noBtn.addEventListener("mouseover", moveNo);
@@ -323,6 +308,7 @@ noBtn.addEventListener("touchstart", e => {
 });
 
 yesBtn.addEventListener("click", () => {
+  yesBtn.disabled = true;
   card.classList.add("yes-mode");
   yesBtn.style.display = "none";
   noBtn.style.display = "none";
