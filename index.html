@@ -208,43 +208,18 @@ button {
     <img src="Second.gif" style="width:200px;">
   </div>
 </div>
+});
 <script>
 const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
 const result = document.getElementById("result");
 const question = document.getElementById("question");
-  
+
 let yesScale = 1;
 const maxYesScale = 2.5;
-let scene = 0;
 
-function nextScene() {
-  scene++;
-
-  if (scene === 1) {
-    typeText(question, "You just made my day 💕🥰", 55);
-    spawnHearts();
-  }
-
-  if (scene === 2) {
-    setTimeout(() => {
-      typeText(question, "I was really hoping you'd say yes…", 65);
-    }, 600);
-  }
-
-  if (scene === 3) {
-    setTimeout(() => {
-      typeText(question, "Happy Valentine’s Day 💖", 60);
-      result.style.display = "block";
-      spawnHearts();
-      spawnHearts();
-    }, 800);
-  }
-}
 /* ---------------- typing (emoji-safe + cancellable) ---------------- */
-let typingSession = 0;
-
 let typingSession = 0;
 
 function typeText(element, text, baseSpeed = 60, onComplete) {
@@ -265,15 +240,12 @@ function typeText(element, text, baseSpeed = 60, onComplete) {
 
     if (i >= chars.length) {
       element.classList.remove("typing");
-      if (onComplete) onComplete(); // ✅ signal done
+      if (onComplete) onComplete();
       return;
     }
 
     let delay = baseSpeed + Math.random() * 80;
-
-    if (/[.,!?💖💕🥰]/.test(chars[i - 1])) {
-      delay += 250;
-    }
+    if (/[.,!?💖💕🥰]/.test(chars[i - 1])) delay += 250;
 
     setTimeout(typeNext, delay);
   }
@@ -281,7 +253,7 @@ function typeText(element, text, baseSpeed = 60, onComplete) {
   setTimeout(typeNext, baseSpeed);
 }
 
-/* ---------------- hearts on YES ---------------- */
+/* ---------------- hearts ---------------- */
 function spawnHearts() {
   const rect = yesBtn.getBoundingClientRect();
   const cardRect = card.getBoundingClientRect();
@@ -300,6 +272,7 @@ function spawnHearts() {
 /* ---------------- NO dodge ---------------- */
 function moveNo() {
   if (navigator.vibrate) navigator.vibrate(15);
+
   noBtn.style.position = "absolute";
   noBtn.style.animation = "shake 0.15s";
 
@@ -338,20 +311,19 @@ noBtn.addEventListener("touchstart", e => {
   moveNo();
 });
 
+/* ---------------- YES scene flow ---------------- */
 yesBtn.addEventListener("click", () => {
+  if (navigator.vibrate) navigator.vibrate(40);
+
   yesBtn.style.display = "none";
   noBtn.style.display = "none";
   card.classList.add("yes-mode");
 
-  // Scene 1
   typeText(question, "You just made my day 💕🥰", 55, () => {
-
     spawnHearts();
 
-    // Scene 2
-    typeText(question, "I was really hoping you'd say yes…", 70, () => {
+    typeText(question, "I was really hoping you'd say yes…", 65, () => {
 
-      // Scene 3
       typeText(question, "Happy Valentine’s Day 💖", 60, () => {
         result.style.display = "block";
         spawnHearts();
@@ -361,7 +333,7 @@ yesBtn.addEventListener("click", () => {
     });
   });
 });
-       </script>
+</script>
 
   </body> 
   </html>
