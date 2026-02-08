@@ -217,7 +217,31 @@ const question = document.getElementById("question");
 
 let yesScale = 1;
 const maxYesScale = 2.5;
+let scene = 0;
 
+function nextScene() {
+  scene++;
+
+  if (scene === 1) {
+    typeText(question, "You just made my day 💕🥰", 55);
+    spawnHearts();
+  }
+
+  if (scene === 2) {
+    setTimeout(() => {
+      typeText(question, "I was really hoping you'd say yes…", 65);
+    }, 600);
+  }
+
+  if (scene === 3) {
+    setTimeout(() => {
+      typeText(question, "Happy Valentine’s Day 💖", 60);
+      result.style.display = "block";
+      spawnHearts();
+      spawnHearts();
+    }, 800);
+  }
+}
 /* ---------------- typing (emoji-safe + cancellable) ---------------- */
 let typingSession = 0;
 
@@ -308,13 +332,19 @@ noBtn.addEventListener("touchstart", e => {
 });
 
 yesBtn.addEventListener("click", () => {
-  typingSession++; // cancel typing safely
+  typingSession++; // cancel current typing
+
   card.classList.add("yes-mode");
   yesBtn.style.display = "none";
   noBtn.style.display = "none";
-  typeText(question, "You just made my day 💕🥰", 55);
-  spawnHearts();
-  result.style.display = "block";
+
+  scene = 0;
+  nextScene();
+  setTimeout(nextScene, 2200);
+  setTimeout(nextScene, 4200);
+
+  triggerHaptic(true);
+  playYesSound();
 });
        </script>
 
