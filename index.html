@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine 💖</title>
 
@@ -33,7 +32,6 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* ambient hearts */
 .ambient-hearts {
   position: fixed;
   inset: 0;
@@ -43,32 +41,16 @@ body {
 
 .ambient-heart {
   position: absolute;
-  font-size: 16px;
+  font-size: 14px;
   opacity: 0.35;
   animation: floatAmbient linear infinite;
 }
 
 @keyframes floatAmbient {
-  from {
-    transform: translateY(110vh) scale(0.8);
-    opacity: 0;
-  }
-  20% { opacity: 0.4; }
-  to {
-    transform: translateY(-20vh) scale(1.2);
-    opacity: 0;
-  }
-}
-@keyframes breathe {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.02); }
-  100% { transform: scale(1); }
+  from { transform: translateY(110vh); opacity: 0; }
+  to   { transform: translateY(-20vh); opacity: 0; }
 }
 
-.paper.breathing {
-  animation: breathe 4.5s ease-in-out infinite;
-}
-/* card */
 .paper {
   background: #fffdf7;
   width: 320px;
@@ -84,36 +66,30 @@ body {
 }
 
 .paper.yes-mode {
-  background: linear-gradient(
-    135deg,
-    #ffb3c6,
-    #ffd6e0,
-    #fff0d9
-  );
+  background: linear-gradient(135deg,#ffb3c6,#ffd6e0,#fff0d9);
   box-shadow: 0 22px 50px rgba(230,57,70,0.45);
+}
+
+.paper.breathing {
+  animation: breathe 4.5s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
 }
 
 img.cat {
   width: 130px;
   margin-bottom: 10px;
-  pointer-events: none;
 }
 
 h2 {
-  font-family: "Patrick Hand", cursive;
-  letter-spacing: 0.5px;
-  margin-bottom: 20px;
-}
-h2 {
-  font-family: "Patrick Hand", cursive;
-  letter-spacing: 0.5px;
+  font-family: "Patrick Hand","Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",cursive;
   white-space: pre-wrap;
 }
-  h2 {
-  font-family: "Patrick Hand", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", cursive;
-  letter-spacing: 0.5px;
-  }
-/* typing cursor */
+
 .typing::after {
   content: "▍";
   animation: blink 1s infinite;
@@ -124,20 +100,10 @@ h2 {
   51%,100% { opacity: 0; }
 }
 
-/* buttons */
 .buttons {
   display: flex;
   justify-content: center;
   gap: 16px;
-}
-
-button {
-  border: none;
-  border-radius: 35px;
-  cursor: pointer;
-  background: transparent;
-}
-.buttons {
   transition: opacity 0.4s ease;
 }
 
@@ -145,31 +111,28 @@ button {
   opacity: 0;
   pointer-events: none;
 }
+
+button {
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
 #yes {
   --scale: 1;
   padding: 14px 32px;
   font-size: 18px;
   background: #e63946;
   color: white;
-  border-radius: 25px;
-  box-shadow: 0 6px 15px rgba(230,57,70,0.45);
   animation: pulseGlow 1.6s infinite;
-  transform: scale(var(--scale));
+  transform: translate(0,0) scale(var(--scale));
+  transition: transform 0.12s ease-out;
 }
 
 @keyframes pulseGlow {
-  0% {
-    transform: scale(var(--scale));
-    box-shadow: 0 6px 15px rgba(230,57,70,0.45);
-  }
-  50% {
-    transform: scale(calc(var(--scale) * 1.08));
-    box-shadow: 0 10px 25px rgba(230,57,70,0.8);
-  }
-  100% {
-    transform: scale(var(--scale));
-    box-shadow: 0 6px 15px rgba(230,57,70,0.45);
-  }
+  0% { transform: scale(var(--scale)); }
+  50% { transform: scale(calc(var(--scale) * 1.08)); }
+  100% { transform: scale(var(--scale)); }
 }
 
 #no {
@@ -178,15 +141,6 @@ button {
   background: #ddd;
 }
 
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-3px); }
-  50% { transform: translateX(3px); }
-  75% { transform: translateX(-2px); }
-  100% { transform: translateX(0); }
-}
-
-/* hearts */
 .heart {
   position: absolute;
   font-size: 18px;
@@ -195,8 +149,8 @@ button {
 }
 
 @keyframes floatUp {
-  0% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-80px) scale(1.4); }
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-80px); }
 }
 
 .result {
@@ -211,7 +165,7 @@ button {
 <div class="ambient-hearts"></div>
 
 <div class="paper" id="card">
-  <img class="cat" src="First.gif" alt="cat">
+  <img class="cat" src="First.gif">
   <h2 id="question"></h2>
 
   <div class="buttons">
@@ -220,107 +174,67 @@ button {
   </div>
 
   <div class="result" id="result">
-  <img src="Second.gif" style="width:200px;">
+    <img src="Second.gif" style="width:200px;">
+  </div>
 </div>
-</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
 const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
-const result = document.getElementById("result");
 const question = document.getElementById("question");
+const result = document.getElementById("result");
+const buttons = document.querySelector(".buttons");
 
 let yesScale = 1;
 const maxYesScale = 2.5;
-let yesFollowEnabled = true;
-const maxFollow = 14; // px (keep small for elegance)
-/* ---------------- typing ---------------- */
+
+/* typing */
 let typingSession = 0;
-
-function typeText(element, text, baseSpeed = 60, onComplete) {
+function typeText(el, text, speed = 60, done) {
   typingSession++;
-  const session = typingSession;
-
+  const s = typingSession;
   const chars = Array.from(text);
-  element.textContent = "";
-  element.classList.add("typing");
-
+  el.textContent = "";
+  el.classList.add("typing");
   let i = 0;
 
-  function typeNext() {
-    if (session !== typingSession) return;
-
-    element.textContent += chars[i];
-    i++;
-
+  function next() {
+    if (s !== typingSession) return;
+    el.textContent += chars[i++];
     if (i >= chars.length) {
-      element.classList.remove("typing");
-      onComplete && onComplete();
+      el.classList.remove("typing");
+      done && done();
       return;
     }
-
-    let delay = baseSpeed + Math.random() * 80;
-    if (/[.,!?💖💕🥰]/.test(chars[i - 1])) delay += 250;
-
-    setTimeout(typeNext, delay);
+    setTimeout(next, speed + Math.random()*80);
   }
-
-  setTimeout(typeNext, baseSpeed);
+  next();
 }
-function followFinger(e) {
-  if (!yesFollowEnabled) return;
 
-  const touch = e.touches[0];
-  const yesRect = yesBtn.getBoundingClientRect();
-
-  const centerX = yesRect.left + yesRect.width / 2;
-  const centerY = yesRect.top + yesRect.height / 2;
-
-  let dx = touch.clientX - centerX;
-  let dy = touch.clientY - centerY;
-
-  const dist = Math.hypot(dx, dy);
-  if (dist > maxFollow) {
-    dx = (dx / dist) * maxFollow;
-    dy = (dy / dist) * maxFollow;
-  }
-
-  yesBtn.style.transform =
-    `translate(${dx}px, ${dy}px) scale(var(--scale))`;
-  }
-/* ---------------- hearts ---------------- */
+/* hearts */
 function spawnHearts() {
-  const rect = yesBtn.getBoundingClientRect();
-  const cardRect = card.getBoundingClientRect();
-
-  for (let i = 0; i < 8; i++) {
+  const r = yesBtn.getBoundingClientRect();
+  const c = card.getBoundingClientRect();
+  for (let i=0;i<8;i++) {
     const h = document.createElement("div");
     h.className = "heart";
     h.textContent = "💖";
-    h.style.left =
-      rect.left - cardRect.left + rect.width / 2 + "px";
-    h.style.top =
-      rect.top - cardRect.top - 10 + "px"; // ⬅ FIX
+    h.style.left = (r.left - c.left + r.width/2) + "px";
+    h.style.top = (r.top - c.top) + "px";
     card.appendChild(h);
-    setTimeout(() => h.remove(), 1500);
+    setTimeout(()=>h.remove(),1500);
   }
 }
 
-/* ---------------- NO dodge ---------------- */
+/* NO dodge */
 function moveNo() {
   if (navigator.vibrate) navigator.vibrate(15);
-
   noBtn.style.position = "absolute";
-  noBtn.style.animation = "shake 0.15s";
-
-  const pad = 25;
-  const maxX = card.clientWidth - noBtn.offsetWidth - pad;
-  const maxY = card.clientHeight - noBtn.offsetHeight - pad;
-
-  noBtn.style.left = Math.random() * maxX + pad + "px";
-  noBtn.style.top = Math.random() * maxY bh + pad + "px";
+  noBtn.style.left = Math.random()*220 + "px";
+  noBtn.style.top  = Math.random()*260 + "px";
 
   if (yesScale < maxYesScale) {
     yesScale += 0.12;
@@ -328,56 +242,76 @@ function moveNo() {
   }
 }
 
-/* ---------------- ambient hearts ---------------- */
-const ambient = document.querySelector(".ambient-hearts");
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 
+/* YES follow finger (desktop + mobile) */
+let yesFollowEnabled = true;
+const maxFollow = 14;
+
+function follow(x, y) {
+  if (!yesFollowEnabled) return;
+
+  const r = yesBtn.getBoundingClientRect();
+  const dx = x - (r.left + r.width/2);
+  const dy = y - (r.top + r.height/2);
+
+  const clamp = (v,m) => Math.max(-m, Math.min(m,v));
+  yesBtn.style.transform =
+    `translate(${clamp(dx*0.15,maxFollow)}px,${clamp(dy*0.15,maxFollow)}px)
+     scale(var(--scale))`;
+}
+
+document.addEventListener("mousemove", e => follow(e.clientX,e.clientY));
+document.addEventListener("touchmove", e => {
+  follow(e.touches[0].clientX,e.touches[0].clientY);
+},{passive:true});
+
+document.addEventListener("mouseleave", resetYes);
+document.addEventListener("touchend", resetYes);
+
+function resetYes() {
+  yesBtn.style.transform = "translate(0,0) scale(var(--scale))";
+}
+
+/* ambient hearts */
+const ambient = document.querySelector(".ambient-hearts");
 setInterval(() => {
   const h = document.createElement("div");
   h.className = "ambient-heart";
   h.textContent = "💖";
-  h.style.left = Math.random() * 100 + "vw";
-  h.style.fontSize = 12 + Math.random() * 10 + "px";
-  h.style.animationDuration = 20 + Math.random() * 15 + "s";
+  h.style.left = Math.random()*100 + "vw";
+  h.style.animationDuration = 20 + Math.random()*15 + "s";
   ambient.appendChild(h);
-  setTimeout(() => h.remove(), 40000);
-}, 1200);
+  setTimeout(()=>h.remove(),40000);
+},1200);
 
-/* ---------------- init ---------------- */
-typeText(question, "Will you be my Valentine? 💖", 70);
+/* init */
+typeText(question,"Will you be my Valentine? 💖",70);
 
-noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("touchstart", e => {
-  e.preventDefault();
-  moveNo();
-});
-document.addEventListener("touchmove", followFinger, { passive: true });
-
-document.addEventListener("touchend", () => {
-  yesBtn.style.transform = "translate(0,0) scale(var(--scale))";
-});
-/* ---------------- YES flow ---------------- */
+/* YES */
 yesBtn.addEventListener("click", () => {
- yesFollowEnabled = false;
+  yesFollowEnabled = false;
+  resetYes();
   if (navigator.vibrate) navigator.vibrate(40);
 
-  card.classList.add("yes-mode", "breathing");
-  document.querySelector(".buttons").classList.add("hide");
+  card.classList.add("yes-mode","breathing");
+  buttons.classList.add("hide");
 
   setTimeout(() => {
-    typeText(question, "I was really hoping you'd say yes…", 65, () => {
+    typeText(question,"I was really hoping you’d say yes… 💗",65,() => {
       setTimeout(() => {
-        typeText(question, "Happy Valentine’s Day 💖", 60, () => {
+        typeText(question,"Happy Valentine’s Day 💖✨",60,() => {
           result.style.display = "block";
-          spawnHearts();
-          spawnHearts();
+          spawnHearts(); spawnHearts();
         });
-      }, 900);
+      },900);
     });
-  }, 400);
+  },400);
 });
 
 });
 </script>
 
-  </body> 
-  </html>
+</body>
+</html>
