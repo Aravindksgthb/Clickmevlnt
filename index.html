@@ -218,7 +218,7 @@ const question = document.getElementById("question");
 let yesScale = 1;
 const maxYesScale = 2.5;
 
-/* ---------- typing (SAFE + EMOJI FIXED) ---------- */
+/* ---------------- typing (emoji-safe + cancellable) ---------------- */
 let typingSession = 0;
 
 function typeText(element, text, baseSpeed = 60) {
@@ -251,7 +251,7 @@ function typeText(element, text, baseSpeed = 60) {
   setTimeout(typeNext, baseSpeed);
 }
 
-/* ---------- hearts on YES ---------- */
+/* ---------------- hearts on YES ---------------- */
 function spawnHearts() {
   const rect = yesBtn.getBoundingClientRect();
   const cardRect = card.getBoundingClientRect();
@@ -267,7 +267,7 @@ function spawnHearts() {
   }
 }
 
-/* ---------- NO dodge ---------- */
+/* ---------------- NO dodge ---------------- */
 function moveNo() {
   noBtn.style.position = "absolute";
   noBtn.style.animation = "shake 0.15s";
@@ -285,7 +285,7 @@ function moveNo() {
   }
 }
 
-/* ---------- ambient floating hearts ---------- */
+/* ---------------- ambient hearts ---------------- */
 const ambient = document.querySelector(".ambient-hearts");
 setInterval(() => {
   const h = document.createElement("div");
@@ -298,7 +298,7 @@ setInterval(() => {
   setTimeout(() => h.remove(), 40000);
 }, 1200);
 
-/* ---------- init ---------- */
+/* ---------------- init ---------------- */
 typeText(question, "Will you be my Valentine? 💖", 70);
 
 noBtn.addEventListener("mouseover", moveNo);
@@ -308,7 +308,7 @@ noBtn.addEventListener("touchstart", e => {
 });
 
 yesBtn.addEventListener("click", () => {
-  yesBtn.disabled = true;
+  typingSession++; // cancel typing safely
   card.classList.add("yes-mode");
   yesBtn.style.display = "none";
   noBtn.style.display = "none";
@@ -316,7 +316,7 @@ yesBtn.addEventListener("click", () => {
   spawnHearts();
   result.style.display = "block";
 });
-</script>
+       </script>
 
-</body>
-</html>
+  </body> 
+  </html>
