@@ -293,6 +293,7 @@ function spawnHearts() {
 
 /* ---------------- NO dodge ---------------- */
 function moveNo() {
+  if (navigator.vibrate) navigator.vibrate(15);
   noBtn.style.position = "absolute";
   noBtn.style.animation = "shake 0.15s";
 
@@ -332,6 +333,7 @@ noBtn.addEventListener("touchstart", e => {
 });
 
 yesBtn.addEventListener("click", () => {
+  if (navigator.vibrate) navigator.vibrate(60);
   typingSession++; // cancel current typing
 
   card.classList.add("yes-mode");
