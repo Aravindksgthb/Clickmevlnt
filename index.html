@@ -214,7 +214,7 @@ const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
 const result = document.getElementById("result");
 const question = document.getElementById("question");
-
+  
 let yesScale = 1;
 const maxYesScale = 2.5;
 let scene = 0;
@@ -245,7 +245,9 @@ function nextScene() {
 /* ---------------- typing (emoji-safe + cancellable) ---------------- */
 let typingSession = 0;
 
-function typeText(element, text, baseSpeed = 60) {
+let typingSession = 0;
+
+function typeText(element, text, baseSpeed = 60, onComplete) {
   typingSession++;
   const session = typingSession;
 
@@ -263,11 +265,15 @@ function typeText(element, text, baseSpeed = 60) {
 
     if (i >= chars.length) {
       element.classList.remove("typing");
+      if (onComplete) onComplete(); // ✅ signal done
       return;
     }
 
     let delay = baseSpeed + Math.random() * 80;
-    if (/[.,!?💖💕🥰]/.test(chars[i - 1])) delay += 250;
+
+    if (/[.,!?💖💕🥰]/.test(chars[i - 1])) {
+      delay += 250;
+    }
 
     setTimeout(typeNext, delay);
   }
@@ -333,20 +339,27 @@ noBtn.addEventListener("touchstart", e => {
 });
 
 yesBtn.addEventListener("click", () => {
-  if (navigator.vibrate) navigator.vibrate(60);
-  typingSession++; // cancel current typing
-
-  card.classList.add("yes-mode");
   yesBtn.style.display = "none";
   noBtn.style.display = "none";
+  card.classList.add("yes-mode");
 
-  scene = 0;
-  nextScene();
-  setTimeout(nextScene, 2200);
-  setTimeout(nextScene, 4200);
+  // Scene 1
+  typeText(question, "You just made my day 💕🥰", 55, () => {
 
-  triggerHaptic(true);
-  playYesSound();
+    spawnHearts();
+
+    // Scene 2
+    typeText(question, "I was really hoping you'd say yes…", 70, () => {
+
+      // Scene 3
+      typeText(question, "Happy Valentine’s Day 💖", 60, () => {
+        result.style.display = "block";
+        spawnHearts();
+        spawnHearts();
+      });
+
+    });
+  });
 });
        </script>
 
