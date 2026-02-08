@@ -234,7 +234,8 @@ const question = document.getElementById("question");
 
 let yesScale = 1;
 const maxYesScale = 2.5;
-
+let yesFollowEnabled = true;
+const maxFollow = 14; // px (keep small for elegance)
 /* ---------------- typing ---------------- */
 let typingSession = 0;
 
@@ -268,7 +269,27 @@ function typeText(element, text, baseSpeed = 60, onComplete) {
 
   setTimeout(typeNext, baseSpeed);
 }
+function followFinger(e) {
+  if (!yesFollowEnabled) return;
 
+  const touch = e.touches[0];
+  const yesRect = yesBtn.getBoundingClientRect();
+
+  const centerX = yesRect.left + yesRect.width / 2;
+  const centerY = yesRect.top + yesRect.height / 2;
+
+  let dx = touch.clientX - centerX;
+  let dy = touch.clientY - centerY;
+
+  const dist = Math.hypot(dx, dy);
+  if (dist > maxFollow) {
+    dx = (dx / dist) * maxFollow;
+    dy = (dy / dist) * maxFollow;
+  }
+
+  yesBtn.style.transform =
+    `translate(${dx}px, ${dy}px) scale(var(--scale))`;
+  }
 /* ---------------- hearts ---------------- */
 function spawnHearts() {
   const rect = yesBtn.getBoundingClientRect();
@@ -299,7 +320,7 @@ function moveNo() {
   const maxY = card.clientHeight - noBtn.offsetHeight - pad;
 
   noBtn.style.left = Math.random() * maxX + pad + "px";
-  noBtn.style.top = Math.random() * maxY + pad + "px";
+  noBtn.style.top = Math.random() * maxY bh + pad + "px";
 
   if (yesScale < maxYesScale) {
     yesScale += 0.12;
@@ -329,9 +350,14 @@ noBtn.addEventListener("touchstart", e => {
   e.preventDefault();
   moveNo();
 });
+document.addEventListener("touchmove", followFinger, { passive: true });
 
+document.addEventListener("touchend", () => {
+  yesBtn.style.transform = "translate(0,0) scale(var(--scale))";
+});
 /* ---------------- YES flow ---------------- */
 yesBtn.addEventListener("click", () => {
+ yesFollowEnabled = false;
   if (navigator.vibrate) navigator.vibrate(40);
 
   card.classList.add("yes-mode", "breathing");
