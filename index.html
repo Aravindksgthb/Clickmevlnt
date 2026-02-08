@@ -318,18 +318,18 @@ yesBtn.addEventListener("click", () => {
   noBtn.style.display = "none";
   card.classList.add("yes-mode");
 
-  typeText(question, "You just made my day 💕🥰", 55, () => {
-    spawnHearts();
+  typeText(question, "I was really hoping you'd say yes…", 65, () => {
 
-    typeText(question, "I was really hoping you'd say yes…", 65, () => {
-
-      typeText(question, "Happy Valentine’s Day 💖", 60, () => {
-        result.style.display = "block";
-        spawnHearts();
-        spawnHearts();
-      });
-
+  // 🌸 gentle pause so it feels human
+  setTimeout(() => {
+    typeText(question, "Happy Valentine’s Day 💖", 60, () => {
+      result.style.display = "block";
+      spawnHearts();
+      spawnHearts();
     });
+  }, 600); // ← sweet spot (500–700ms)
+
+});
   });
 });
 </script>
