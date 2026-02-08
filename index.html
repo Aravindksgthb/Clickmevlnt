@@ -332,21 +332,26 @@ yesBtn.addEventListener("click", () => {
 
   card.classList.add("yes-mode");
   card.classList.add("breathing");
-// fade buttons instead of instant vanish
-document.querySelector(".buttons").classList.add("hide");
 
-// ✨ small emotional pause before text starts
-setTimeout(() => {
-  typeText(question, "I was really hoping you'd say yes…", 65, () => {
-  // 🌸 gentle pause so it feels human
+  // fade buttons
+  document.querySelector(".buttons").classList.add("hide");
+
+  // ✨ small emotional pause before text starts
   setTimeout(() => {
-    typeText(question, "Happy Valentine’s Day 💖", 60, () => {
-      result.style.display = "block";
-      spawnHearts();
-      spawnHearts();
+    typeText(question, "I was really hoping you'd say yes…", 65, () => {
+
+      // 🌸 gentle pause between lines
+      setTimeout(() => {
+        typeText(question, "Happy Valentine’s Day 💖", 60, () => {
+          result.style.display = "block";
+          spawnHearts();
+          spawnHearts();
+        });
+      }, 900);
+
     });
-  }, 900); // ← sweet spot (500–950ms)
-  });
+  }, 400);
+});
 });
 </script>
 
