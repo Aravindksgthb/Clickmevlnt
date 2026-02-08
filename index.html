@@ -129,7 +129,14 @@ button {
   cursor: pointer;
   background: transparent;
 }
+.buttons {
+  transition: opacity 0.4s ease;
+}
 
+.buttons.hide {
+  opacity: 0;
+  pointer-events: none;
+}
 #yes {
   --scale: 1;
   padding: 14px 32px;
@@ -315,12 +322,14 @@ noBtn.addEventListener("touchstart", e => {
 yesBtn.addEventListener("click", () => {
   if (navigator.vibrate) navigator.vibrate(40);
 
-  yesBtn.style.display = "none";
-  noBtn.style.display = "none";
   card.classList.add("yes-mode");
 
-  typeText(question, "I was really hoping you'd say yes…", 65, () => {
+// fade buttons instead of instant vanish
+document.querySelector(".buttons").classList.add("hide");
 
+// ✨ small emotional pause before text starts
+setTimeout(() => {
+  typeText(question, "I was really hoping you'd say yes…", 65, () => {
   // 🌸 gentle pause so it feels human
   setTimeout(() => {
     typeText(question, "Happy Valentine’s Day 💖", 60, () => {
