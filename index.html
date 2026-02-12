@@ -245,23 +245,27 @@ function spawnHearts() {
 /* NO dodge */
 function moveNo() {
   if (navigator.vibrate) navigator.vibrate(15);
+
+  // If already maxed, don't dodge anymore
+  if (yesScale >= maxYesScale) return;
+
   noBtn.style.position = "absolute";
   noBtn.style.left = Math.random()*220 + "px";
   noBtn.style.top  = Math.random()*260 + "px";
 
-  if (yesScale < maxYesScale) {
-    yesScale += 0.12;
+  yesScale += 0.12;
+  yesBtn.style.setProperty("--scale", yesScale);
+
+  if (yesScale >= maxYesScale) {
+    yesScale = maxYesScale; // lock value
     yesBtn.style.setProperty("--scale", yesScale);
-    if (yesScale >= maxYesScale) {
-  noBtn.innerText = "I tried 😔";
-  noBtn.style.pointerEvents = "none";
 
-  setTimeout(() => {
-    noBtn.classList.add("fall");
-  }, 700);
+    noBtn.innerText = "I tried 😔";
+    noBtn.style.pointerEvents = "none";
 
-  return;
-    }
+    setTimeout(() => {
+      noBtn.classList.add("fall");
+    }, 700);
   }
 }
 
