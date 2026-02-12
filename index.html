@@ -302,8 +302,15 @@ yesBtn.addEventListener("click", () => {
 });
 
 /* init */
-typeText(question,"Will you be my Valentine? 💖",70);
-
+typeText(question,"Hey…",80, () => {
+  setTimeout(() => {
+    typeText(question,"I’ve been meaning to ask you something…",70, () => {
+      setTimeout(() => {
+        typeText(question,"Will you be my Valentine? 💖",65);
+      },1200);
+    });
+  },800);
+});
 });
 </script>
 
