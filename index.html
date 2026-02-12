@@ -32,6 +32,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 
+/* Ambient hearts (behind card) */
 .ambient-hearts {
   position: fixed;
   inset: 0;
@@ -41,16 +42,25 @@ body {
 
 .ambient-heart {
   position: absolute;
-  font-size: 14px;
+  font-size: 16px;
   opacity: 0.35;
   animation: floatAmbient linear infinite;
 }
 
 @keyframes floatAmbient {
-  from { transform: translateY(110vh); opacity: 0; }
-  to   { transform: translateY(-20vh); opacity: 0; }
+  0% {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+  20% { opacity: 0.35; }
+  80% { opacity: 0.35; }
+  100% {
+    transform: translateY(-20vh);
+    opacity: 0;
+  }
 }
 
+/* Card */
 .paper {
   background: #fffdf7;
   width: 320px;
@@ -99,20 +109,16 @@ h2 {
   0%,50% { opacity: 1; }
   51%,100% { opacity: 0; }
 }
+
 @keyframes fallDown {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(400px);
-    opacity: 0;
-  }
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(400px); opacity: 0; }
 }
 
 .fall {
   animation: fallDown 1.2s cubic-bezier(.2,.7,.3,1) forwards;
 }
+
 .buttons {
   display: flex;
   justify-content: center;
@@ -203,6 +209,7 @@ const buttons = document.querySelector(".buttons");
 
 let yesScale = 1;
 const maxYesScale = 2.5;
+let noFinished = false;
 
 /* typing */
 let typingSession = 0;
@@ -227,26 +234,27 @@ function typeText(el, text, speed = 60, done) {
   next();
 }
 
-/* hearts */
-function spawnHearts() {
-  const r = yesBtn.getBoundingClientRect();
-  const c = card.getBoundingClientRect();
-  for (let i=0;i<8;i++) {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.textContent = "💖";
-    h.style.left = (r.left - c.left + r.width/2) + "px";
-    h.style.top = (r.top - c.top) + "px";
-    card.appendChild(h);
-    setTimeout(()=>h.remove(),1500);
-  }
-}
+/* Ambient hearts FIXED */
+const ambient = document.querySelector(".ambient-hearts");
 
-/* NO dodge */
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "ambient-heart";
+  h.textContent = "💖";
+
+  // FIX: use px instead of vw
+  h.style.left = Math.random() * window.innerWidth + "px";
+
+  h.style.animationDuration = 20 + Math.random()*15 + "s";
+  ambient.appendChild(h);
+
+  setTimeout(()=>h.remove(),40000);
+},1200);
+
+/* NO dodge + grow */
 function moveNo() {
   if (navigator.vibrate) navigator.vibrate(15);
 
-  // If already maxed, don't dodge anymore
   if (yesScale >= maxYesScale) return;
 
   noBtn.style.position = "absolute";
@@ -256,8 +264,9 @@ function moveNo() {
   yesScale += 0.12;
   yesBtn.style.setProperty("--scale", yesScale);
 
-  if (yesScale >= maxYesScale) {
-    yesScale = maxYesScale; // lock value
+  if (yesScale >= maxYesScale && !noFinished) {
+    noFinished = true;
+    yesScale = maxYesScale;
     yesBtn.style.setProperty("--scale", yesScale);
 
     noBtn.innerText = "I tried 😔";
@@ -265,63 +274,15 @@ function moveNo() {
 
     setTimeout(() => {
       noBtn.classList.add("fall");
-    }, 700);
+    }, 900);
   }
 }
 
 noBtn.addEventListener("mouseover", moveNo);
 noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 
-/* YES follow finger (desktop + mobile) */
-let yesFollowEnabled = true;
-const maxFollow = 14;
-
-function follow(x, y) {
-  if (!yesFollowEnabled) return;
-
-  const r = yesBtn.getBoundingClientRect();
-  const dx = x - (r.left + r.width/2);
-  const dy = y - (r.top + r.height/2);
-
-  const clamp = (v,m) => Math.max(-m, Math.min(m,v));
-  yesBtn.style.transform =
-    `translate(${clamp(dx*0.15,maxFollow)}px,${clamp(dy*0.15,maxFollow)}px)
-     scale(var(--scale))`;
-}
-
-document.addEventListener("mousemove", e => follow(e.clientX,e.clientY));
-document.addEventListener("touchmove", e => {
-  follow(e.touches[0].clientX,e.touches[0].clientY);
-},{passive:true});
-
-document.addEventListener("mouseleave", resetYes);
-document.addEventListener("touchend", resetYes);
-
-function resetYes() {
-  yesBtn.style.transform = "translate(0,0) scale(var(--scale))";
-}
-
-/* ambient hearts */
-const ambient = document.querySelector(".ambient-hearts");
-setInterval(() => {
-  const h = document.createElement("div");
-  h.className = "ambient-heart";
-  h.textContent = "💖";
-  h.style.left = Math.random()*100 + "vw";
-  h.style.animationDuration = 20 + Math.random()*15 + "s";
-  ambient.appendChild(h);
-  setTimeout(()=>h.remove(),40000);
-},1200);
-
-/* init */
-typeText(question,"Will you be my Valentine? 💖",70);
-
 /* YES */
 yesBtn.addEventListener("click", () => {
-  yesFollowEnabled = false;
-  resetYes();
-  if (navigator.vibrate) navigator.vibrate(40);
-
   card.classList.add("yes-mode","breathing");
   buttons.classList.add("hide");
 
@@ -330,12 +291,14 @@ yesBtn.addEventListener("click", () => {
       setTimeout(() => {
         typeText(question,"Happy Valentine’s Day 💖✨",60,() => {
           result.style.display = "block";
-          spawnHearts(); spawnHearts();
         });
       },900);
     });
   },400);
 });
+
+/* init */
+typeText(question,"Will you be my Valentine? 💖",70);
 
 });
 </script>
