@@ -297,8 +297,24 @@ yesBtn.addEventListener("click", () => {
     typeText(question,"I was really hoping you’d say yes… 💗",65,() => {
       setTimeout(() => {
         typeText(question, "Maybe this is where forever begins. 💖✨", 60, () => {
-          result.style.display = "block";
-        });
+
+  result.style.display = "block";
+
+  // ❤️ Heart burst
+  for (let i = 0; i < 18; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "💖";
+
+    heart.style.left = Math.random() * 260 + "px";
+    heart.style.top = Math.random() * 320 + "px";
+
+    card.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 1500);
+  }
+
+});
       },900);
     });
   },400);
