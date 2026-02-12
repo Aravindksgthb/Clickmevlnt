@@ -52,10 +52,10 @@ body {
     transform: translateY(110vh);
     opacity: 0;
   }
-  15% {
+  5% {
     opacity: 0.35;
   }
-  85% {
+  95% {
     opacity: 0.35;
   }
   100% {
@@ -248,7 +248,7 @@ setInterval(() => {
   // FIX: use px instead of vw
   h.style.left = Math.random() * window.innerWidth + "px";
 
-  h.style.animationDuration = 20 + Math.random()*15 + "s";
+  h.style.animationDuration = 15 + Math.random()*10 + "s";
   ambient.appendChild(h);
 
   setTimeout(()=>h.remove(),40000);
