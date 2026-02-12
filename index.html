@@ -111,7 +111,7 @@ h2 {
 }
 
 .fall {
-  animation: fallDown 0.8s ease forwards;
+  animation: fallDown 1.2s cubic-bezier(.2,.7,.3,1) forwards;
 }
 .buttons {
   display: flex;
@@ -254,8 +254,12 @@ function moveNo() {
     yesBtn.style.setProperty("--scale", yesScale);
     if (yesScale >= maxYesScale) {
   noBtn.innerText = "I tried 😔";
+noBtn.style.pointerEvents = "none";
+
+// small dramatic pause
+setTimeout(() => {
   noBtn.classList.add("fall");
-  noBtn.style.pointerEvents = "none";
+}, 700);";
   return;
     }
   }
