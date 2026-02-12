@@ -254,12 +254,12 @@ function moveNo() {
     yesBtn.style.setProperty("--scale", yesScale);
     if (yesScale >= maxYesScale) {
   noBtn.innerText = "I tried 😔";
-noBtn.style.pointerEvents = "none";
+  noBtn.style.pointerEvents = "none";
 
-// small dramatic pause
-setTimeout(() => {
-  noBtn.classList.add("fall");
-}, 700);";
+  setTimeout(() => {
+    noBtn.classList.add("fall");
+  }, 700);
+
   return;
     }
   }
