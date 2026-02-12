@@ -99,7 +99,20 @@ h2 {
   0%,50% { opacity: 1; }
   51%,100% { opacity: 0; }
 }
+@keyframes fallDown {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(400px);
+    opacity: 0;
+  }
+}
 
+.fall {
+  animation: fallDown 0.8s ease forwards;
+}
 .buttons {
   display: flex;
   justify-content: center;
@@ -239,6 +252,12 @@ function moveNo() {
   if (yesScale < maxYesScale) {
     yesScale += 0.12;
     yesBtn.style.setProperty("--scale", yesScale);
+    if (yesScale >= maxYesScale) {
+  noBtn.innerText = "I tried 😔";
+  noBtn.classList.add("fall");
+  noBtn.style.pointerEvents = "none";
+  return;
+    }
   }
 }
 
