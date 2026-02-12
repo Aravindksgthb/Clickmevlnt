@@ -190,7 +190,7 @@ button {
 <div class="ambient-hearts"></div>
 
 <div class="paper" id="card">
-  <img class="cat" src="First.gif">
+  <img class="cat" id="catGif" src="First.gif">
   <h2 id="question"></h2>
 
   <div class="buttons">
@@ -212,6 +212,7 @@ const card = document.getElementById("card");
 const question = document.getElementById("question");
 const result = document.getElementById("result");
 const buttons = document.querySelector(".buttons");
+  const catGif = document.getElementById("catGif");
 
 let yesScale = 1;
 const maxYesScale = 2.5;
@@ -260,6 +261,11 @@ setInterval(() => {
 
 /* NO dodge + grow */
 function moveNo() {
+  catGif.src = "NoReaction.gif";
+
+setTimeout(() => {
+  catGif.src = "First.gif";
+}, 1500);
   if (navigator.vibrate) navigator.vibrate(15);
 
   if (yesScale >= maxYesScale) return;
