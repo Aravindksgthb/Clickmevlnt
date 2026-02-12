@@ -249,6 +249,7 @@ setInterval(() => {
   h.style.left = Math.random() * window.innerWidth + "px";
 
   h.style.animationDuration = 15 + Math.random()*10 + "s";
+  h.style.fontSize = (12 + Math.random()*18) + "px";
   ambient.appendChild(h);
 
   setTimeout(()=>h.remove(),40000);
