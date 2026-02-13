@@ -260,12 +260,18 @@ setInterval(() => {
 },1200);
 
 /* NO dodge + grow */
+let gifTimeout;
+
 function moveNo() {
+
+  clearTimeout(gifTimeout);
+
   catGif.src = "NoReaction.gif";
 
-setTimeout(() => {
-  catGif.src = "First.gif";
-}, 2500);
+  gifTimeout = setTimeout(() => {
+    catGif.src = "First.gif";
+  }, 2800);
+
   if (navigator.vibrate) navigator.vibrate(15);
 
   if (yesScale >= maxYesScale) return;
