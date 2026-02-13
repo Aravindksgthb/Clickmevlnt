@@ -203,6 +203,8 @@ const card = document.getElementById("card");
 const question = document.getElementById("question");
 const result = document.getElementById("result");
 const catGif = document.getElementById("catGif");
+const teddy = document.getElementById("teddy");
+const buttons = document.querySelector(".buttons");
 
 let yesScale = 1;
 const maxYesScale = 2.5;
@@ -228,6 +230,17 @@ function typeText(el, text, speed = 60, done) {
   }
   next();
 }
+
+/* INTRO SEQUENCE */
+typeText(question,"Heyy 👋",60,() => {
+  setTimeout(()=>{
+    typeText(question,"I've been meaning to ask you something…",60,()=>{
+      setTimeout(()=>{
+        typeText(question,"Will you be my Valentine? 💖",70);
+      },800);
+    });
+  },800);
+});
 
 /* Ambient hearts */
 const ambient = document.querySelector(".ambient-hearts");
@@ -277,9 +290,10 @@ noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 /* YES click */
 yesBtn.addEventListener("click", () => {
 
+  buttons.style.display = "none";   // Hide buttons
   card.classList.add("yes-mode","breathing");
 
-  typeText(question,"I was really hoping you’d say yes… 💗",65,() => {
+  typeText(question,"I was really hoping you'd say yes… 💗",65,() => {
     setTimeout(() => {
       typeText(question,"Maybe this is where forever begins. 💖✨",60,() => {
 
@@ -296,7 +310,7 @@ yesBtn.addEventListener("click", () => {
         }
 
         setTimeout(() => {
-          document.getElementById("teddy").style.display = "block";
+          teddy.style.display = "block";
         }, 600);
 
       });
@@ -304,11 +318,7 @@ yesBtn.addEventListener("click", () => {
   });
 });
 
-/* Init */
-typeText(question,"Will you be my Valentine? 💖",70);
-
 });
 </script>
-
 </body>
 </html>
