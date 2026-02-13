@@ -2,134 +2,79 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine 💖</title>
+<title>For You 💛</title>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap");
-
 body {
   margin: 0;
   height: 100vh;
-  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(120deg,#ffe6eb,#fff0d9,#f0e6ff,#e6f7ff);
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(-45deg, #ffdee9, #b5fffc, #ffe29f, #ffc3a0);
   background-size: 400% 400%;
-  animation: dreamyBG 30s ease infinite;
+  animation: gradientMove 12s ease infinite;
 }
 
-@keyframes dreamyBG {
+@keyframes gradientMove {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
 .paper {
-  background: #fffdf7;
-  width: 320px;
-  height: 470px; /* fixed height prevents expansion */
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-  text-align: center;
   position: relative;
-  overflow: hidden;
-  transition: background 1.2s ease, box-shadow 1.2s ease;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px 25px 80px 25px;
+  min-height: 420px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 }
 
-.paper.yes-mode {
-  background: linear-gradient(135deg,#ffccd5,#ffe5ec,#fff0d9);
-  box-shadow: 0 25px 60px rgba(230,57,70,0.35);
-}
-
-.paper.breathing {
-  animation: breathe 5s ease-in-out infinite;
-}
-
-@keyframes breathe {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
-}
-
-img.cat {
-  width: 130px;
+.cat {
+  width: 180px;
   margin-bottom: 15px;
-  transition: width 0.4s ease;
-}
-
-/* Teddy size when YES */
-.paper.yes-mode img.cat {
-  width: 150px;
 }
 
 h2 {
-  font-family: "Patrick Hand", cursive;
-  white-space: pre-wrap;
-  margin-bottom: 90px; /* space for bottom gif */
-}
-
-.typing::after {
-  content: "▍";
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0%,50% { opacity: 1; }
-  51%,100% { opacity: 0; }
+  margin: 10px 0 20px 0;
+  color: #444;
 }
 
 .buttons {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  transition: opacity 0.4s ease;
-}
-
-.buttons.hide {
-  opacity: 0;
-  pointer-events: none;
+  margin-top: 10px;
 }
 
 button {
+  padding: 10px 22px;
+  font-size: 16px;
+  border-radius: 20px;
   border: none;
-  border-radius: 30px;
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-#yes {
-  --scale: 1;
-  padding: 14px 32px;
-  font-size: 18px;
-  background: #e63946;
+.yes {
+  background: #ff8fa3;
   color: white;
-  animation: pulseGlow 1.6s infinite;
-  transform: scale(var(--scale));
-  transition: transform 0.12s ease-out;
+  transform: scale(var(--scale, 1));
 }
 
-@keyframes pulseGlow {
-  0% { transform: scale(var(--scale)); }
-  50% { transform: scale(calc(var(--scale) * 1.08)); }
-  100% { transform: scale(var(--scale)); }
+.no {
+  background: #ccc;
+  margin-left: 10px;
+  position: relative;
 }
 
-#no {
-  padding: 6px 12px;
-  font-size: 12px;
-  background: #ddd;
-}
-
-/* Bottom GIF fixed position */
 .result {
   display: none;
   position: absolute;
-  bottom: 20px;
+  bottom: 15px;
   left: 0;
   width: 100%;
 }
@@ -138,74 +83,49 @@ button {
   width: 180px;
 }
 
-.heart {
-  position: absolute;
-  font-size: 18px;
-  animation: floatUp 1.5s ease-out forwards;
-  pointer-events: none;
+/* Falling animation */
+@keyframes fallDown {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(400px); opacity: 0; }
 }
 
-@keyframes floatUp {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(-80px); }
+.fall {
+  animation: fallDown 1.2s cubic-bezier(.2,.7,.3,1) forwards;
 }
 </style>
 </head>
 
 <body>
 
-<div class="paper" id="card">
-  <img class="cat" id="catGif" src="First.gif?v=3">
-  <h2 id="question"></h2>
+<div class="paper">
+
+  <img class="cat" id="catGif" src="First.gif?v=5">
+
+  <h2 id="question">Will you be mine? 💖</h2>
 
   <div class="buttons">
-    <button id="yes">YES</button>
-    <button id="no">no</button>
+    <button class="yes" id="yesBtn">Yes</button>
+    <button class="no" id="noBtn">No</button>
   </div>
 
   <div class="result" id="result">
-    <img src="Second.gif?v=3">
+    <img src="Second.gif?v=5">
   </div>
+
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-
-const yesBtn = document.getElementById("yes");
-const noBtn = document.getElementById("no");
-const card = document.getElementById("card");
-const question = document.getElementById("question");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
 const result = document.getElementById("result");
-const buttons = document.querySelector(".buttons");
-const catGif = document.getElementById("catGif");
+const question = document.getElementById("question");
 
 let yesScale = 1;
 const maxYesScale = 2.5;
-let typingSession = 0;
+let noFinished = false;
 
-/* typing effect */
-function typeText(el, text, speed = 60, done) {
-  typingSession++;
-  const s = typingSession;
-  el.textContent = "";
-  el.classList.add("typing");
-  let i = 0;
-
-  function next() {
-    if (s !== typingSession) return;
-    el.textContent += text[i++];
-    if (i >= text.length) {
-      el.classList.remove("typing");
-      done && done();
-      return;
-    }
-    setTimeout(next, speed);
-  }
-  next();
-}
-
-/* NO dodge */
 function moveNo() {
+
   if (yesScale >= maxYesScale) return;
 
   noBtn.style.position = "absolute";
@@ -214,52 +134,21 @@ function moveNo() {
 
   yesScale += 0.12;
   yesBtn.style.setProperty("--scale", yesScale);
+
+  if (yesScale >= maxYesScale && !noFinished) {
+    noFinished = true;
+
+    yesScale = maxYesScale;
+    yesBtn.style.setProperty("--scale", yesScale);
+
+    noBtn.innerText = "I tried 😔";
+    noBtn.style.pointerEvents = "none";
+
+    setTimeout(() => {
+      noBtn.classList.add("fall");
+    }, 900);
+  }
 }
 
-noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
-
-/* YES */
-yesBtn.addEventListener("click", () => {
-  card.classList.add("yes-mode","breathing");
-  buttons.classList.add("hide");
-
-  catGif.src = "Teddy.png?v=3"; /* cache break */
-
-  setTimeout(() => {
-    typeText(question,"I was really hoping you’d say yes… 💗",65,() => {
-      setTimeout(() => {
-        typeText(question,"Maybe this is where forever begins. 💖✨",60,() => {
-          result.style.display = "block";
-
-          for (let i = 0; i < 18; i++) {
-            const heart = document.createElement("div");
-            heart.className = "heart";
-            heart.textContent = "💖";
-            heart.style.left = Math.random() * 260 + "px";
-            heart.style.top = Math.random() * 300 + "px";
-            card.appendChild(heart);
-            setTimeout(() => heart.remove(), 1500);
-          }
-        });
-      },900);
-    });
-  },400);
-});
-
-/* init */
-typeText(question,"Hey…",80, () => {
-  setTimeout(() => {
-    typeText(question,"I’ve been meaning to ask you something…",70, () => {
-      setTimeout(() => {
-        typeText(question,"Will you be my Valentine? 💖",65);
-      },1200);
-    });
-  },800);
-});
-
-});
-</script>
-
-</body>
-</html>
+noBtn
+  
