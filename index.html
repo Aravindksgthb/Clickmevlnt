@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,6 +9,7 @@
 body {
   margin: 0;
   height: 100vh;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,6 +35,7 @@ body {
   width: 320px;
   text-align: center;
   box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  z-index: 2;
 }
 
 .cat {
@@ -92,6 +94,28 @@ button {
 .fall {
   animation: fallDown 1.2s cubic-bezier(.2,.7,.3,1) forwards;
 }
+
+/* Floating hearts */
+.hearts {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  color: rgba(255, 120, 150, 0.5);
+  animation: floatUp linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-110vh) scale(1.4);
+    opacity: 0;
+  }
+}
 </style>
 </head>
 
@@ -99,7 +123,7 @@ button {
 
 <div class="paper">
 
-  <img class="cat" id="catGif" src="First.gif?v=5">
+  <img class="cat" id="catGif" src="First.gif?v=6">
 
   <h2 id="question">Will you be mine? 💖</h2>
 
@@ -109,7 +133,7 @@ button {
   </div>
 
   <div class="result" id="result">
-    <img src="Second.gif?v=5">
+    <img src="Second.gif?v=6">
   </div>
 
 </div>
@@ -150,5 +174,35 @@ function moveNo() {
   }
 }
 
-noBtn
-  
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+yesBtn.addEventListener("click", () => {
+  question.innerText = "I knew it 💛";
+  result.style.display = "block";
+  noBtn.style.display = "none";
+  yesBtn.style.transform = "scale(1.1)";
+});
+
+/* Create floating hearts */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("hearts");
+  heart.innerHTML = "💗";
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+  heart.style.fontSize = (14 + Math.random() * 18) + "px";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 8000);
+}
+
+setInterval(createHeart, 500);
+</script>
+
+</body>
+</html>
