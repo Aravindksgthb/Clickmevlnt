@@ -18,13 +18,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(
-    120deg,
-    #ffe6eb,
-    #fff0d9,
-    #f0e6ff,
-    #e6f7ff
-  );
+  background: linear-gradient(120deg,#ffe6eb,#fff0d9,#f0e6ff,#e6f7ff);
   background-size: 400% 400%;
   animation: dreamyBG 30s ease infinite;
 }
@@ -35,59 +29,26 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* Ambient hearts (behind card) */
-.ambient-hearts {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.ambient-heart {
-  position: absolute;
-  font-size: 16px;
-  opacity: 0.35;
-  animation: floatAmbient linear infinite;
-}
-
-@keyframes floatAmbient {
-  0% {
-    transform: translateY(110vh);
-    opacity: 0;
-  }
-  5% {
-    opacity: 0.35;
-  }
-  95% {
-    opacity: 0.35;
-  }
-  100% {
-    transform: translateY(-20vh);
-    opacity: 0;
-  }
-}
-/* Card */
 .paper {
   background: #fffdf7;
   width: 320px;
-  min-height: 420px;
+  height: 470px; /* fixed height prevents expansion */
   padding: 25px;
-  border-radius: 14px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
   text-align: center;
   position: relative;
-  z-index: 2;
   overflow: hidden;
   transition: background 1.2s ease, box-shadow 1.2s ease;
 }
 
 .paper.yes-mode {
-  background: linear-gradient(135deg,#ffb3c6,#ffd6e0,#fff0d9);
-  box-shadow: 0 22px 50px rgba(230,57,70,0.45);
+  background: linear-gradient(135deg,#ffccd5,#ffe5ec,#fff0d9);
+  box-shadow: 0 25px 60px rgba(230,57,70,0.35);
 }
 
 .paper.breathing {
-  animation: breathe 4.5s ease-in-out infinite;
+  animation: breathe 5s ease-in-out infinite;
 }
 
 @keyframes breathe {
@@ -98,15 +59,19 @@ body {
 
 img.cat {
   width: 130px;
-  margin-bottom: 10px;
-  .paper.yes-mode img.cat {
-  width: 150px;
+  margin-bottom: 15px;
+  transition: width 0.4s ease;
 }
+
+/* Teddy size when YES */
+.paper.yes-mode img.cat {
+  width: 150px;
 }
 
 h2 {
-  font-family: "Patrick Hand","Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",cursive;
+  font-family: "Patrick Hand", cursive;
   white-space: pre-wrap;
+  margin-bottom: 90px; /* space for bottom gif */
 }
 
 .typing::after {
@@ -117,15 +82,6 @@ h2 {
 @keyframes blink {
   0%,50% { opacity: 1; }
   51%,100% { opacity: 0; }
-}
-
-@keyframes fallDown {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(400px); opacity: 0; }
-}
-
-.fall {
-  animation: fallDown 1.2s cubic-bezier(.2,.7,.3,1) forwards;
 }
 
 .buttons {
@@ -153,7 +109,7 @@ button {
   background: #e63946;
   color: white;
   animation: pulseGlow 1.6s infinite;
-  transform: translate(0,0) scale(var(--scale));
+  transform: scale(var(--scale));
   transition: transform 0.12s ease-out;
 }
 
@@ -169,6 +125,19 @@ button {
   background: #ddd;
 }
 
+/* Bottom GIF fixed position */
+.result {
+  display: none;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+}
+
+.result img {
+  width: 180px;
+}
+
 .heart {
   position: absolute;
   font-size: 18px;
@@ -180,20 +149,13 @@ button {
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(-80px); }
 }
-
-.result {
-  display: none;
-  margin-top: 20px;
-}
 </style>
 </head>
 
 <body>
 
-<div class="ambient-hearts"></div>
-
 <div class="paper" id="card">
-  <img class="cat" id="catGif" src="First.gif">
+  <img class="cat" id="catGif" src="First.gif?v=3">
   <h2 id="question"></h2>
 
   <div class="buttons">
@@ -202,7 +164,7 @@ button {
   </div>
 
   <div class="result" id="result">
-    <img src="Second.gif" style="width:200px;">
+    <img src="Second.gif?v=3">
   </div>
 </div>
 
@@ -215,68 +177,35 @@ const card = document.getElementById("card");
 const question = document.getElementById("question");
 const result = document.getElementById("result");
 const buttons = document.querySelector(".buttons");
-  const catGif = document.getElementById("catGif");
+const catGif = document.getElementById("catGif");
 
 let yesScale = 1;
 const maxYesScale = 2.5;
-let noFinished = false;
-
-/* typing */
 let typingSession = 0;
+
+/* typing effect */
 function typeText(el, text, speed = 60, done) {
   typingSession++;
   const s = typingSession;
-  const chars = Array.from(text);
   el.textContent = "";
   el.classList.add("typing");
   let i = 0;
 
   function next() {
     if (s !== typingSession) return;
-    el.textContent += chars[i++];
-    if (i >= chars.length) {
+    el.textContent += text[i++];
+    if (i >= text.length) {
       el.classList.remove("typing");
       done && done();
       return;
     }
-    setTimeout(next, speed + Math.random()*80);
+    setTimeout(next, speed);
   }
   next();
 }
 
-/* Ambient hearts FIXED */
-const ambient = document.querySelector(".ambient-hearts");
-
-setInterval(() => {
-  const h = document.createElement("div");
-  h.className = "ambient-heart";
-  h.textContent = "💖";
-
-  // FIX: use px instead of vw
-  h.style.left = Math.random() * window.innerWidth + "px";
-
-  h.style.animationDuration = 15 + Math.random()*10 + "s";
-  h.style.fontSize = (12 + Math.random()*18) + "px";
-  ambient.appendChild(h);
-
-  setTimeout(()=>h.remove(),40000);
-},1200);
-
-/* NO dodge + grow */
-let gifTimeout;
-
+/* NO dodge */
 function moveNo() {
-
-  clearTimeout(gifTimeout);
-
-  catGif.src = "NoReaction.gif";
-
-  gifTimeout = setTimeout(() => {
-    catGif.src = "First.gif";
-  }, 2800);
-
-  if (navigator.vibrate) navigator.vibrate(15);
-
   if (yesScale >= maxYesScale) return;
 
   noBtn.style.position = "absolute";
@@ -285,19 +214,6 @@ function moveNo() {
 
   yesScale += 0.12;
   yesBtn.style.setProperty("--scale", yesScale);
-
-  if (yesScale >= maxYesScale && !noFinished) {
-    noFinished = true;
-    yesScale = maxYesScale;
-    yesBtn.style.setProperty("--scale", yesScale);
-
-    noBtn.innerText = "I tried 😔";
-    noBtn.style.pointerEvents = "none";
-
-    setTimeout(() => {
-      noBtn.classList.add("fall");
-    }, 900);
-  }
 }
 
 noBtn.addEventListener("mouseover", moveNo);
@@ -307,30 +223,25 @@ noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 yesBtn.addEventListener("click", () => {
   card.classList.add("yes-mode","breathing");
   buttons.classList.add("hide");
-  catGif.src = "Teddy.png";
+
+  catGif.src = "Teddy.png?v=3"; /* cache break */
 
   setTimeout(() => {
     typeText(question,"I was really hoping you’d say yes… 💗",65,() => {
       setTimeout(() => {
-        typeText(question, "Maybe this is where forever begins. 💖✨", 60, () => {
+        typeText(question,"Maybe this is where forever begins. 💖✨",60,() => {
+          result.style.display = "block";
 
-  result.style.display = "block";
-
-  // ❤️ Heart burst
-  for (let i = 0; i < 18; i++) {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.textContent = "💖";
-
-    heart.style.left = Math.random() * 260 + "px";
-    heart.style.top = Math.random() * 320 + "px";
-
-    card.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 1500);
-  }
-
-});
+          for (let i = 0; i < 18; i++) {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.textContent = "💖";
+            heart.style.left = Math.random() * 260 + "px";
+            heart.style.top = Math.random() * 300 + "px";
+            card.appendChild(heart);
+            setTimeout(() => heart.remove(), 1500);
+          }
+        });
       },900);
     });
   },400);
@@ -346,6 +257,7 @@ typeText(question,"Hey…",80, () => {
     });
   },800);
 });
+
 });
 </script>
 
