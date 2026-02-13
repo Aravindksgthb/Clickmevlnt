@@ -304,6 +304,7 @@ noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 yesBtn.addEventListener("click", () => {
   card.classList.add("yes-mode","breathing");
   buttons.classList.add("hide");
+  catGif.src = "teddy.png";
 
   setTimeout(() => {
     typeText(question,"I was really hoping you’d say yes… 💗",65,() => {
