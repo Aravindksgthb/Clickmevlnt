@@ -261,26 +261,39 @@ function moveNo() {
   catGif.src = "NoReaction.gif";
   setTimeout(() => { catGif.src = "First.gif"; }, 2000);
 
-  if (yesScale >= maxYesScale) return;
+  if (yesScale < maxYesScale) {
 
-  noBtn.style.position = "absolute";
+    // Move NO randomly
+    noBtn.style.position = "absolute";
 
-  const maxX = card.clientWidth - noBtn.offsetWidth - 20;
-  const maxY = card.clientHeight - noBtn.offsetHeight - 20;
+    const maxX = card.clientWidth - noBtn.offsetWidth - 20;
+    const maxY = card.clientHeight - noBtn.offsetHeight - 20;
 
-  noBtn.style.left = Math.random()*maxX + "px";
-  noBtn.style.top  = Math.random()*maxY + "px";
+    noBtn.style.left = Math.random()*maxX + "px";
+    noBtn.style.top  = Math.random()*maxY + "px";
 
-  yesScale += 0.12;
-  yesBtn.style.setProperty("--scale", yesScale);
+    // Grow YES
+    yesScale += 0.12;
 
-  if (yesScale >= maxYesScale && !noFinished) {
-    noFinished = true;
-    yesScale = maxYesScale;
-    yesBtn.style.setProperty("--scale", yesScale);
-    noBtn.innerText = "I tried 😔";
-    noBtn.style.pointerEvents = "none";
-    setTimeout(() => { noBtn.classList.add("fall"); }, 900);
+    if (yesScale >= maxYesScale) {
+
+      yesScale = maxYesScale;
+      yesBtn.style.setProperty("--scale", yesScale);
+
+      // Change text clearly
+      noBtn.innerText = "I tried 😔";
+
+      // Reset position so it falls straight down
+      noBtn.style.position = "relative";
+      noBtn.style.left = "0px";
+      noBtn.style.top = "0px";
+
+      // Slower visible fall
+      noBtn.style.animation = "fallDown 2s cubic-bezier(.2,.7,.3,1) forwards";
+
+    } else {
+      yesBtn.style.setProperty("--scale", yesScale);
+    }
   }
 }
 
@@ -290,15 +303,20 @@ noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 /* YES click */
 yesBtn.addEventListener("click", () => {
 
-  buttons.style.display = "none";   // Hide buttons
+  buttons.style.display = "none";
   card.classList.add("yes-mode","breathing");
 
   typeText(question,"I was really hoping you'd say yes… 💗",65,() => {
     setTimeout(() => {
       typeText(question,"Maybe this is where forever begins. 💖✨",60,() => {
 
-        result.style.display = "block";
+        // Change main GIF to Teddy
+        catGif.src = "Teddy.png";
 
+        // Remove bottom gif completely
+        result.style.display = "none";
+
+        // Heart burst
         for (let i = 0; i < 18; i++) {
           const heart = document.createElement("div");
           heart.className = "heart";
@@ -308,10 +326,6 @@ yesBtn.addEventListener("click", () => {
           card.appendChild(heart);
           setTimeout(() => heart.remove(), 1500);
         }
-
-        setTimeout(() => {
-          teddy.style.display = "block";
-        }, 600);
 
       });
     },900);
