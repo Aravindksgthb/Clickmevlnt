@@ -263,40 +263,32 @@ function moveNo() {
 
   if (yesScale < maxYesScale) {
 
-    // Move NO randomly
+    // Ensure button stays inside card safely
+    const cardRect = card.getBoundingClientRect();
+    const btnRect = noBtn.getBoundingClientRect();
+
+    const maxX = card.clientWidth - btnRect.width - 30;
+    const maxY = card.clientHeight - btnRect.height - 30;
+
     noBtn.style.position = "absolute";
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top  = Math.random() * maxY + "px";
 
-    const maxX = card.clientWidth - noBtn.offsetWidth - 20;
-    const maxY = card.clientHeight - noBtn.offsetHeight - 20;
-
-    noBtn.style.left = Math.random()*maxX + "px";
-    noBtn.style.top  = Math.random()*maxY + "px";
-
-    // Grow YES
     yesScale += 0.12;
 
     if (yesScale >= maxYesScale) {
-
       yesScale = maxYesScale;
       yesBtn.style.setProperty("--scale", yesScale);
 
-      // Change text clearly
       noBtn.innerText = "I tried 😔";
 
-      // Reset position so it falls straight down
-      noBtn.style.position = "relative";
-      noBtn.style.left = "0px";
-      noBtn.style.top = "0px";
-
-      // Slower visible fall
-      noBtn.style.animation = "fallDown 2s cubic-bezier(.2,.7,.3,1) forwards";
-
+      // Make fall noticeable and clean
+      noBtn.style.animation = "fallDown 2.5s ease forwards";
     } else {
       yesBtn.style.setProperty("--scale", yesScale);
     }
   }
 }
-
 noBtn.addEventListener("mouseover", moveNo);
 noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 
@@ -310,11 +302,11 @@ yesBtn.addEventListener("click", () => {
     setTimeout(() => {
       typeText(question,"Maybe this is where forever begins. 💖✨",60,() => {
 
-        // Change main GIF to Teddy
+        // Change top GIF to Teddy
         catGif.src = "Teddy.png";
 
-        // Remove bottom gif completely
-        result.style.display = "none";
+        // Show second gif
+        result.style.display = "block";
 
         // Heart burst
         for (let i = 0; i < 18; i++) {
